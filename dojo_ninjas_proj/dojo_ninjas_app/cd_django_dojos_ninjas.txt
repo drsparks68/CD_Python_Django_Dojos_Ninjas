@@ -1,0 +1,67 @@
+(djangoPy3Env) ➜  dojo_ninjas_proj git:(main) ✗ python manage.py shell 
+Python 3.9.0 (v3.9.0:9cf6752276, Oct  5 2020, 11:29:23) 
+[Clang 6.0 (clang-600.0.57)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from dojo_ninjas_app.models import *
+>>> dojos.objects.create(name="West", city="Seattle", state="WA")
+<Dojo Name: West (1)>
+>>> dojos.objects.create(name="East", city="Boston", state="MA")
+<Dojo Name: East (2)>
+>>> dojos.objects.create(name="South", city="Wichita", state="KS")
+<Dojo Name: South (3)>
+>>> dojos.objects.filter(id=1).delete()
+(1, {'dojo_ninjas_app.ninjas': 0, 'dojo_ninjas_app.dojos': 1})
+>>> dojos.objects.filter(id=2).delete()
+(1, {'dojo_ninjas_app.ninjas': 0, 'dojo_ninjas_app.dojos': 1})
+>>> dojos.objects.filter(id=3).delete()
+(1, {'dojo_ninjas_app.ninjas': 0, 'dojo_ninjas_app.dojos': 1})
+>>> dojos.objects.all()
+<QuerySet []>
+>>> dojos.objects.create(name="West", city="Portland", state="OR")
+<Dojo Name: West (4)>
+>>> dojos.objects.create(name="East", city="New York", state="NY")
+<Dojo Name: East (5)>
+>>> dojos.objects.create(name="South", city="Atlanta", state="GA")
+<Dojo Name: South (6)>
+>>> dojos.objects.all()
+<QuerySet [<Dojo Name: West (4)>, <Dojo Name: East (5)>, <Dojo Name: South (6)>]>
+>>> dojo_east = dojos.objects.get(id=5)
+>>> new_ninja4 = ninjas.objects.create(first_name="Luke", last_name="Cage",dojo_id=dojo_east)
+>>> new_ninja5 = ninjas.objects.create(first_name="Tony", last_name="Stark",dojo_id=dojo_east)
+>>> new_ninja6 = ninjas.objects.create(first_name="Clint", last_name="Barton",dojo_id=dojo_east)
+>>> dojo_south = dojos.objects.get(id=6)
+>>> new_ninja4 = ninjas.objects.create(first_name="Scott", last_name="Lang",dojo_id=dojo_south)
+>>> new_ninja5 = ninjas.objects.create(first_name="Peter", last_name="Parker",dojo_id=dojo_south)
+>>> new_ninja6 = ninjas.objects.create(first_name="Jean", last_name="Grey",dojo_id=dojo_south)
+>>> dojo_west = dojos.objects.get(id=4)
+>>> ninjas_west = ninjas.objects.filter(dojo_id=dojo_west)
+>>> print(ninjas_west)
+<QuerySet [<Ninja name: Sam (dojos object (4))>, <Ninja name: Bruce (dojos object (4))>, <Ninja name: Bucky (dojos object (4))>]>
+>>> ninjas_south = ninjas.objects.filter(dojo_id=dojo_south)
+>>> print(ninjas_south)
+<QuerySet [<Ninja name: Scott (dojos object (6))>, <Ninja name: Peter (dojos object (6))>, <Ninja name: Jean (dojos object (6))>]>
+>>> print(last_ninja.dojo_id)
+dojos object (6)
+
+(djangoPy3Env) ➜  dojo_ninjas_proj git:(main) ✗ python manage.py makemigrations
+You are trying to add a non-nullable field 'desc' to dojos without a default; we can't do that (the database needs something to populate existing rows).
+Please select a fix:
+ 1) Provide a one-off default now (will be set on all existing rows with a null value for this column)
+ 2) Quit, and let me add a default in models.py
+Select an option: 1
+Please enter the default value now, as valid Python
+The datetime and django.utils.timezone modules are available, so you can do e.g. timezone.now
+Type 'exit' to exit this prompt
+>>> "old dojo"
+Migrations for 'dojo_ninjas_app':
+  dojo_ninjas_app/migrations/0002_dojos_desc.py
+    - Add field desc to dojos
+(djangoPy3Env) ➜  dojo_ninjas_proj git:(main) ✗ python manage.py migrate       
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, dojo_ninjas_app, sessions
+Running migrations:
+  Applying dojo_ninjas_app.0002_dojos_desc... OK
+
+>>> dojos.objects.create(name="Mid-West", city="Columbus", state="OH", desc="Just Opened")
+<Dojo Name: Mid-West (7)>

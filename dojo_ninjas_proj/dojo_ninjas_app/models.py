@@ -4,6 +4,7 @@ class dojos(models.Model):
     name = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     state = models.CharField(max_length=2)
+    desc = models.CharField(max_length=255)
 
     def __repr__(self):
         return f"<Dojo Name: {self.name} ({self.id})>"
